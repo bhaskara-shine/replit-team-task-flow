@@ -125,50 +125,50 @@ export default function DashboardPage() {
           )}
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
-          {/* Recent Activity */}
-          <div className="bg-card border rounded-lg">
-            <div className="px-5 py-4 border-b flex items-center gap-2">
-              <Activity className="h-4 w-4 text-muted-foreground" />
-              <h2 className="font-semibold text-sm">Recent Activity</h2>
-            </div>
-            <div className="divide-y">
-              {activity.isLoading ? (
-                Array.from({ length: 4 }).map((_, i) => (
-                  <div key={i} className="px-5 py-3">
-                    <Skeleton className="h-4 w-3/4" />
-                    <Skeleton className="h-3 w-1/3 mt-1.5" />
-                  </div>
-                ))
-              ) : !activity.data?.length ? (
-                <div className="px-5 py-8 text-center text-sm text-muted-foreground">
-                  No activity yet
-                </div>
-              ) : (
-                activity.data.map((item) => (
-                  <div
-                    key={item.id}
-                    className="px-5 py-3"
-                    data-testid={`activity-item-${item.id}`}
-                  >
-                    <p className="text-sm">{item.description}</p>
-                    <div className="flex items-center gap-2 mt-1">
-                      {item.memberName && (
-                        <span className="text-xs text-muted-foreground font-medium">
-                          {item.memberName}
-                        </span>
-                      )}
-                      <span className="text-xs text-muted-foreground">
-                        {formatDistanceToNow(new Date(item.createdAt), {
-                          addSuffix: true,
-                        })}
-                      </span>
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Recent Activity */}
+            <div className="bg-card border rounded-lg">
+              <div className="px-5 py-4 border-b flex items-center gap-2">
+                <Activity className="h-4 w-4 text-muted-foreground" />
+                <h2 className="font-semibold text-sm">Recent Activity</h2>
+              </div>
+              <div className="divide-y">
+                {activity.isLoading ? (
+                  Array.from({ length: 4 }).map((_, i) => (
+                    <div key={i} className="px-5 py-3">
+                      <Skeleton className="h-4 w-3/4" />
+                      <Skeleton className="h-3 w-1/3 mt-1.5" />
                     </div>
+                  ))
+                ) : !Array.isArray(activity.data) || activity.data.length === 0 ? (
+                  <div className="px-5 py-8 text-center text-sm text-muted-foreground">
+                    No activity yet
                   </div>
-                ))
-              )}
+                ) : (
+                  (Array.isArray(activity.data) ? activity.data : []).map((item) => (
+                    <div
+                      key={item.id}
+                      className="px-5 py-3"
+                      data-testid={`activity-item-${item.id}`}
+                    >
+                      <p className="text-sm">{item.description}</p>
+                      <div className="flex items-center gap-2 mt-1">
+                        {item.memberName && (
+                          <span className="text-xs text-muted-foreground font-medium">
+                            {item.memberName}
+                          </span>
+                        )}
+                        <span className="text-xs text-muted-foreground">
+                          {formatDistanceToNow(new Date(item.createdAt), {
+                            addSuffix: true,
+                          })}
+                        </span>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
             </div>
-          </div>
 
           {/* Upcoming Deadlines */}
           <div className="bg-card border rounded-lg">
@@ -187,12 +187,12 @@ export default function DashboardPage() {
                     <Skeleton className="h-3 w-1/2 mt-1.5" />
                   </div>
                 ))
-              ) : !upcoming.data?.length ? (
+              ) : !Array.isArray(upcoming.data) || upcoming.data.length === 0 ? (
                 <div className="px-5 py-8 text-center text-sm text-muted-foreground">
                   No deadlines in the next 7 days
                 </div>
               ) : (
-                upcoming.data.map((task) => (
+                (Array.isArray(upcoming.data) ? upcoming.data : []).map((task) => (
                   <div
                     key={task.id}
                     className="px-5 py-3 flex items-start justify-between gap-3"
@@ -238,12 +238,12 @@ export default function DashboardPage() {
                   <Skeleton className="h-2 w-full" />
                 </div>
               ))
-            ) : !workload.data?.length ? (
+            ) : !Array.isArray(workload.data) || workload.data.length === 0 ? (
               <div className="px-5 py-8 text-center text-sm text-muted-foreground">
                 No team members yet
               </div>
             ) : (
-              workload.data.map((member) => {
+              (Array.isArray(workload.data) ? workload.data : []).map((member) => {
                 const pct =
                   member.totalTasks > 0
                     ? Math.round(

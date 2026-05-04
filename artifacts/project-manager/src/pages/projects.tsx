@@ -251,13 +251,16 @@ function CreateProjectDialog({ open, onClose }: { open: boolean; onClose: () => 
 export default function ProjectsPage() {
   const [showCreate, setShowCreate] = useState(false);
   const projects = useListProjects();
+  
+const projectsList = Array.isArray(projects.data) ? projects.data : [];
 
-  const grouped = {
-    active: projects.data?.filter((p) => p.status === "active") ?? [],
-    on_hold: projects.data?.filter((p) => p.status === "on_hold") ?? [],
-    completed: projects.data?.filter((p) => p.status === "completed") ?? [],
-    cancelled: projects.data?.filter((p) => p.status === "cancelled") ?? [],
-  };
+const grouped = {
+  active: projectsList.filter((p) => p.status === "active"),
+  on_hold: projectsList.filter((p) => p.status === "on_hold"),
+  completed: projectsList.filter((p) => p.status === "completed"),
+  cancelled: projectsList.filter((p) => p.status === "cancelled"),
+};
+
 
   return (
     <Layout>
